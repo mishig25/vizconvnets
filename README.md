@@ -1,5 +1,5 @@
 # VizConvnets
-### Visualizing Channels of 2 D Convolutional Layers through [Tensorflowjs](https://js.tensorflow.org)
+### Visualizing Channels of 2D Convolutional Layers through [Tensorflowjs](https://js.tensorflow.org)
 Independent Project
 
 #### Description:
