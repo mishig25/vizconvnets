@@ -1,54 +1,56 @@
-import { getTopKClasses } from './imagenet_classes';
 import Model from './model'
-import Plot from './plot'
+import Engine from './engine'
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-var imgData,imgData2,allData;
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+const engine = new Engine();
+const mod = new Model();
+
+var layer1,layer2,layer3;
 
 async function init() {
-  // mobilenet = await loadMobilenet();
-
-  var mod = new Model();
   await mod.loadModel();
-  // await mod.loadMobilenet();
-  console.log('here')
   //predicting on cat
   const imgElement = document.getElementById('cat');
   const preds = await mod.predict(imgElement);
 
-  // console.log(preds)
-  // const classes = await getTopKClasses(preds[preds.length-1], 10);
-  // console.log(classes)
-  // gettign first layer
-
-  allData = await mod.getActivation(canvas,0,8);
+  layer1 = await mod.getActivation(canvas,0,8);
+  layer2 = await mod.getActivation(canvas,2,16);
+  layer3 = await mod.getActivation(canvas,3,32);
 }
 
-// circle math
-function toRadians (angle) {
-  return angle * (Math.PI / 180);
+async function handleFileSelect(evt) {
+  var f = evt.target.files[0]; // FileList object
+  var reader = new FileReader();
+
+  // Closure to capture the file information.
+  reader.onload = (function(theFile) {
+    return function(e) {
+      document.getElementById("cat").src= e.target.result;
+    };
+  })(f);
+
+  // Read in the image file as a data URL.
+  reader.readAsDataURL(f);
+  console.log('file loaded')
+
+  // testing here
+  await mod.loadModel();
+  //predicting on cat
+  const imgElement = document.getElementById('cat');
+  const preds = await mod.predict(imgElement);
+
+  layer1 = await mod.getActivation(canvas,0,8);
+  layer2 = await mod.getActivation(canvas,2,16);
+  layer3 = await mod.getActivation(canvas,3,32);
+  engine.renderChannels([layer1,layer2,layer3])
 }
 
 // Initialize the application.
-init()
-
-setTimeout(function(){
-  var game = new Phaser.Game(600, 600, Phaser.CANVAS, 'phaser', { create: create });
-
-  function create() {
-    game.stage.backgroundColor = 0xbada55;
-    // console.log(allData)
-    const offset = 360/allData.length;
-    for(var i=0; i<allData.length; i++){
-      const channelData = allData[i];
-      const {width} = channelData;
-      var bmd = game.add.bitmapData(112,112);
-      bmd.ctx.putImageData(channelData,0,0);
-      var x = Math.cos(toRadians(i*offset))*100+300;
-      var y = Math.sin(toRadians(i*offset))*100+300;
-      var sprite = game.add.sprite(x, y, bmd);
-      sprite.scale.setTo(.5, .5);
-    }
-  }
-}, 3000);
+// init()
+//
+// setTimeout(function(){
+//   engine.renderChannels([layer1,layer2,layer3])
+// },3000)

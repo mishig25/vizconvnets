@@ -1,3 +1,6 @@
+// repo: https://github.com/santilland/plotty
+// Modified for this project
+
 /**
  * The main plotty module.
  * @module plotty
