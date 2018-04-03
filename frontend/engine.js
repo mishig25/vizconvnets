@@ -27,4 +27,13 @@ export default class Engine{
       sprite.scale.setTo(scale,scale);
     }
   }
+  renderOriginalImage(imgData, scale){
+    const width = 224;
+    var bmd = this.game.add.bitmapData(width,width);
+    bmd.ctx.putImageData(imgData,0,0);
+    var x = 300-(scale*width/2);
+    var y = 300-(scale*width/2);
+    var sprite = this.game.add.sprite(x, y, bmd);
+    sprite.scale.setTo(scale,scale);
+  }
 }

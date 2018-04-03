@@ -11,8 +11,11 @@ Afterwards, there was a plethora of papers and demos about visualizing convnets,
 
 This project is a continuation of the convnet visualizing trend. By using Tensorflowjs and [MobileNet](https://arxiv.org/abs/1704.04861), an efficient CNN architecture, the project visualizes sample channels/filters from MobileNet and does so through web browser only.
 
-### Content of the repository:
+### Contents of the repository:
 * [Model](https://github.com/mishig25/vizconvnets/tree/master/model)
 Activation model is created through Keras Functionall API in Jupyter Notebooks.
 * [Frontend](https://github.com/mishig25/vizconvnets/tree/master/frontend)
 Using Tensorflowjs and HTML5 Canvas to create a convnet visualizations in web-browser environemnt.
+
+#### License
+MIT

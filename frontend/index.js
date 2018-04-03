@@ -34,13 +34,16 @@ async function handleFileSelect(evt) {
 
   // Read in the image file as a data URL.
   reader.readAsDataURL(f);
-  console.log('file loaded')
 
   // testing here
   await mod.loadModel();
   //predicting on cat
   const imgElement = document.getElementById('cat');
   const preds = await mod.predict(imgElement);
+  //drawing to old canvas
+  ctx.drawImage(document.getElementById("cat"),0,0);
+  const originalImageData = ctx.getImageData(0,0,224,224);
+  engine.renderOriginalImage(originalImageData, .3);
 
   layer1 = await mod.getActivation(canvas,0,8);
   layer2 = await mod.getActivation(canvas,2,16);
