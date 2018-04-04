@@ -30,7 +30,6 @@ export default class Model{
 
     const preds = tf.tidy(() => {
       const img = tf.fromPixels(imgElement).toFloat();
-      // this.getInputImageData(imgElement);
       const offset = tf.scalar(127.5);
       const normalized = img.sub(offset).div(offset);
       const batched = normalized.reshape([1, IMAGE_SIZE, IMAGE_SIZE, 3]);
@@ -38,26 +37,6 @@ export default class Model{
     });
     this.preds = preds;
     return preds;
-  }
-
-  async getInputImageData(imgElement){
-    const img = tf.fromPixels(imgElement);
-    const data = await img.data();
-    let imageData = new Uint8ClampedArray(img.size * 4);
-    for (let i = 0, len = imageData.length; i < len; i += 4) {
-      imageData[i + 3] = data[i / 4];
-    }
-    return new ImageData(imageData, img.shape[0], img.shape[1]);
-  }
-
-  tensorMinMax(tensor) {
-    let min = Infinity
-    let max = -Infinity
-    for (let i = 0, len = tensor.length; i < len; i++) {
-      if (tensor[i] < min) min = tensor[i]
-      if (tensor[i] > max) max = tensor[i]
-    }
-    return { min, max }
   }
 
   async getActivation(canvas, layerNumber, channelCount){
