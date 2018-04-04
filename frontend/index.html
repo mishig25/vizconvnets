@@ -5,15 +5,22 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/p2.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js"></script>
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="indexStyle.css">
 </head>
 
 
 <body>
-  <input type="file" id="file" name="uploadImg" accept="image/*"/>
-  <div id="renderArea">
-    <img id="img" width=224 height=224/>
+  <div class="container">
+    <h1>Visualizing Convnets</h1>
+    <label class="btn btn-primary">
+      <input type="file" id="file" name="uploadImg" accept="image/*" class="hidden"/>
+        Upload Image
+    </label>
+    <div id="renderArea">
+      <img id="img" width=224 height=224/>
+    </div>
+    <canvas id="helperCanvas" width=224 height=224 class="hidden"></canvas>
   </div>
-  <canvas id="helperCanvas" width=224 height=224></canvas>
 </body>
 <script src="index.js"></script>

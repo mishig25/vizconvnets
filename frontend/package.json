@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@tensorflow/tfjs": "0.6.1",
-    "phaser": "^3.3.0",
-    "plotty": "^0.2.0",
     "vega-embed": "~3.0.0"
   },
   "scripts": {

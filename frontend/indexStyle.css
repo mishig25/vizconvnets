@@ -14,6 +14,12 @@
   -ms-transform: scale(0.3, 0.3);
   -webkit-transform: scale(0.3, 0.3);
 }
-#helperCanvas {
+.hidden {
   display: none;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
