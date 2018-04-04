@@ -1,24 +1,18 @@
 import Model from './model'
 import Engine from './engine'
 
-var canvas = document.getElementById("canvas");
+var canvas = document.getElementById("helperCanvas");
 var ctx = canvas.getContext("2d");
 document.getElementById('file').addEventListener('change', handleFileSelect, false);
 const imgElement = document.getElementById('img');
 
-const engine = new Engine();
-const mod = new Model();
-
-var layer1,layer2,layer3;
+let model, engine;
 
 async function init() {
-  await mod.loadModel();
-  //predicting on cat
-  const preds = await mod.predict(imgElement);
-
-  layer1 = await mod.getActivation(canvas,0,8);
-  layer2 = await mod.getActivation(canvas,2,16);
-  layer3 = await mod.getActivation(canvas,3,32);
+  engine = new Engine();
+  model = new Model();
+  await model.loadModel();
+  model.warmUp();
 }
 
 function handleFileSelect(evt) {
@@ -32,13 +26,14 @@ function handleFileSelect(evt) {
 }
 
 async function predict(imgElement){
-  if(!mod.loaded) await mod.loadModel();
+  if(!model.loaded) await model.loadModel();
 
-  const preds = await mod.predict(imgElement);
+  const preds = await model.predict(imgElement);
 
-  layer1 = await mod.getActivation(canvas,0,8);
-  layer2 = await mod.getActivation(canvas,1,16);
-  layer3 = await mod.getActivation(canvas,2,32);
+  const layer1 = await model.getActivation(canvas,0,8);
+  const layer2 = await model.getActivation(canvas,1,16);
+  const layer3 = await model.getActivation(canvas,2,32);
   engine.renderChannels([layer1,layer2,layer3]);
-
 }
+
+init();

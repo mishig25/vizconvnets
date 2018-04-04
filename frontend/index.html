@@ -5,24 +5,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/p2.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js"></script>
 
-  <style>
-    #renderArea {
-      width: 600px;
-      height: 600px;
-      position: relative;
-    }
-    #img {
-      width: 224px;
-      height: 224px;
-      position: absolute;
-      top: 190px;
-      left: 190px;
-      z-index: 10;
-      transform: scale(0.3, 0.3);
-      -ms-transform: scale(0.3, 0.3);
-      -webkit-transform: scale(0.3, 0.3);
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="indexStyle.css">
 </head>
 
 
@@ -31,7 +14,6 @@
   <div id="renderArea">
     <img id="img" width=224 height=224/>
   </div>
-  <canvas id="canvas" width=500 height=500></canvas>
-
+  <canvas id="helperCanvas" width=224 height=224></canvas>
 </body>
 <script src="index.js"></script>

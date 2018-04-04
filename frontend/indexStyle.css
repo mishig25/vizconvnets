@@ -1,0 +1,19 @@
+#renderArea {
+  width: 600px;
+  height: 600px;
+  position: relative;
+}
+#img {
+  width: 224px;
+  height: 224px;
+  position: absolute;
+  top: 190px;
+  left: 190px;
+  z-index: 10;
+  transform: scale(0.3, 0.3);
+  -ms-transform: scale(0.3, 0.3);
+  -webkit-transform: scale(0.3, 0.3);
+}
+#helperCanvas {
+  display: none;
+}

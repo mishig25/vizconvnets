@@ -25,6 +25,12 @@ export default class Model{
     this.loaded = true;
   }
 
+  warmUp(){
+    tf.tidy(() => {
+      this.model.predict(tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3]));
+    });
+  }
+
   async predict(imgElement) {
 
     const preds = tf.tidy(() => {
