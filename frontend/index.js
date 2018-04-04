@@ -4,6 +4,7 @@ import Engine from './engine'
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
+const imgElement = document.getElementById('cat');
 
 const engine = new Engine();
 const mod = new Model();
@@ -13,7 +14,6 @@ var layer1,layer2,layer3;
 async function init() {
   await mod.loadModel();
   //predicting on cat
-  const imgElement = document.getElementById('cat');
   const preds = await mod.predict(imgElement);
 
   layer1 = await mod.getActivation(canvas,0,8);
@@ -26,22 +26,16 @@ function handleFileSelect(evt) {
   var reader = new FileReader();
 
   reader.onload = e => {
-    const IMAGE_SIZE = 224;
-    let img = document.createElement('img');
-    img.src= e.target.result;
-    img.width = IMAGE_SIZE;
-    img.height = IMAGE_SIZE;
-    img.onload = () => predict(img);
+    imgElement.src= e.target.result;
+    imgElement.onload = () => predict(imgElement);
   }
   // Read in the image file as a data URL.
   reader.readAsDataURL(f);
 }
 
 async function predict(imgElement){
-  if(!mod.loaded){
-    await mod.loadModel();
-  }
-
+  if(!mod.loaded) await mod.loadModel();
+  
   const preds = await mod.predict(imgElement);
 
   layer1 = await mod.getActivation(canvas,0,8);
