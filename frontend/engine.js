@@ -1,5 +1,6 @@
 export default class Engine{
   constructor(){
+    this.sprites = [];
     this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'phaser', { create: this.create });
   }
   create(){
@@ -34,6 +35,6 @@ export default class Engine{
     var x = 300-(scale*width/2);
     var y = 300-(scale*width/2);
     var sprite = this.game.add.sprite(x, y, bmd);
-    sprite.scale.setTo(scale,scale);
+    // sprite.scale.setTo(scale,scale);
   }
 }
