@@ -4,15 +4,34 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/pixi.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/p2.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js"></script>
+
+  <style>
+
+#renderArea {
+  width: 600px;
+  height: 600px;
+  position: relative;
+}
+#cat {
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  top: 45%;
+  left: 45%;
+}
+#cat {
+  z-index: 10;
+}
+  </style>
 </head>
 
 
 <body>
-  <img id="cat" src="cat.jpg" width=224 height=224/>
-  <canvas id="canvas" width=500 height=500></canvas>
-
   <input type="file" id="files" name="uploadImg" accept="image/*"/>
-
+  <div id="renderArea">
+    <img id="cat" src="cat.jpg" width=224 height=224/>
+  </div>
+  <canvas id="canvas" width=500 height=500></canvas>
 
 </body>
 <script src="index.js"></script>

@@ -1,7 +1,7 @@
 export default class Engine{
   constructor(){
     this.sprites = [];
-    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'phaser', { create: this.create });
+    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'renderArea', { create: this.create });
   }
   create(){
     this.game.stage.backgroundColor = 0xbada55;
@@ -29,12 +29,14 @@ export default class Engine{
     }
   }
   renderOriginalImage(imgData, scale){
-    const width = 224;
-    var bmd = this.game.add.bitmapData(width,width);
-    bmd.ctx.putImageData(imgData,0,0);
+    // console.log(imgData)
+    // const width = 224;
+    // var bmd = this.game.add.bitmapData(width,width);
+    // bmd.ctx.putImageData(imgData,0,0);
     var x = 300-(scale*width/2);
     var y = 300-(scale*width/2);
-    var sprite = this.game.add.sprite(x, y, bmd);
+    console.log(x,y)
+    // var sprite = this.game.add.sprite(x, y, bmd);
     // sprite.scale.setTo(scale,scale);
   }
 }

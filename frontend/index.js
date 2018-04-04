@@ -42,17 +42,11 @@ async function predict(imgElement){
     await mod.loadModel();
   }
 
-  ctx.drawImage(imgElement,0,0);
-  setTimeout(async function(){
-    const originalImageData = ctx.getImageData(0,0,224,224);
-    engine.renderOriginalImage(originalImageData, .3);
+  const preds = await mod.predict(imgElement);
 
-    const preds = await mod.predict(imgElement);
-
-    layer1 = await mod.getActivation(canvas,0,8);
-    layer2 = await mod.getActivation(canvas,1,16);
-    layer3 = await mod.getActivation(canvas,2,32);
-    engine.renderChannels([layer1,layer2,layer3]);
-  }, 3000);
+  layer1 = await mod.getActivation(canvas,0,8);
+  layer2 = await mod.getActivation(canvas,1,16);
+  layer3 = await mod.getActivation(canvas,2,32);
+  engine.renderChannels([layer1,layer2,layer3]);
 
 }
