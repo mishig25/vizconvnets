@@ -22,7 +22,6 @@ export default class Model{
       layerOutputs.push(layer.output);
     })
     this.model = tf.model({inputs: mobilenet.inputs, outputs: layerOutputs});
-    // this.model.predict(tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3])).dispose();
     this.loaded = true;
   }
 
