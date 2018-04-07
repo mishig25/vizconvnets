@@ -1,12 +1,24 @@
 export default class Engine{
   constructor(){
     this.sprites = [];
-    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'renderArea', { create: this.create, update: this.update });
+    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'renderArea', { create: this.create, update: this.update.bind(this) });
   }
   create(){
     this.game.stage.backgroundColor = 0xbada55;
   }
   update(){
+    if(this.sprites.length > 0){
+      for(var i=0;i<this.sprites.length;i++){
+        const item = this.sprites[i];
+        var {sprite,degree,radius,translate} = item;
+        degree = degree + .2;
+        var x = Math.cos(this.toRadians(degree))*radius+translate;
+        var y = Math.sin(this.toRadians(degree))*radius+translate;
+        sprite.x = x;
+        sprite.y = y;
+        this.sprites[i].degree = degree;
+      }
+    }
   }
   renderChannels(layers){
     this.plotActivationLayer(layers[0],.5,100);
@@ -29,9 +41,7 @@ export default class Engine{
       var y = Math.sin(this.toRadians(degree))*radius+translate;
       var sprite = this.game.add.sprite(x, y, bmd);
       sprite.scale.setTo(scale,scale);
-      this.sprites.push({
-        sprite:sprite,degree:degree,radius:radius,translate:translate
-      });
+      this.sprites.push({ sprite,degree,radius,translate });
     }
   }
 }
