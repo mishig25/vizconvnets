@@ -1,10 +1,12 @@
 export default class Engine{
   constructor(){
     this.sprites = [];
-    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'renderArea', { create: this.create });
+    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'renderArea', { create: this.create, update: this.update });
   }
   create(){
     this.game.stage.backgroundColor = 0xbada55;
+  }
+  update(){
   }
   renderChannels(layers){
     this.plotActivationLayer(layers[0],.5,100);
