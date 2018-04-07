@@ -24,10 +24,14 @@ export default class Engine{
       var bmd = this.game.add.bitmapData(width,width);
       bmd.ctx.putImageData(channelData,0,0);
       const degree = i*offset;
-      var x = Math.cos(this.toRadians(degree))*radius+300-(scale*width/2);
-      var y = Math.sin(this.toRadians(degree))*radius+300-(scale*width/2);
+      const translate = 300-(scale*width/2)
+      var x = Math.cos(this.toRadians(degree))*radius+translate;
+      var y = Math.sin(this.toRadians(degree))*radius+translate;
       var sprite = this.game.add.sprite(x, y, bmd);
       sprite.scale.setTo(scale,scale);
+      this.sprites.push({
+        sprite:sprite,degree:degree,radius:radius,translate:translate
+      });
     }
   }
 }
