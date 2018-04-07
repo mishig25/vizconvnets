@@ -23,3 +23,13 @@
     justify-content: center;
     align-items: center;
 }
+#imgChooserContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+}
+#orLabel{
+  margin-left: 20px;
+  margin-right: 20px
+}
