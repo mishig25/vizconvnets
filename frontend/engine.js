@@ -12,8 +12,7 @@ export default class Engine{
         const item = this.sprites[i];
         var {sprite,degree,radius,translate} = item;
         degree = degree + .2;
-        var x = Math.cos(this.toRadians(degree))*radius+translate;
-        var y = Math.sin(this.toRadians(degree))*radius+translate;
+        const {x,y} = this.calculateCoordinates(degree,radius,translate);
         sprite.x = x;
         sprite.y = y;
         this.sprites[i].degree = degree;
@@ -28,6 +27,11 @@ export default class Engine{
   toRadians (angle) {
     return angle * (Math.PI / 180);
   }
+  calculateCoordinates(degree,radius,translate){
+    const x = Math.cos(this.toRadians(degree))*radius+translate;
+    const y = Math.sin(this.toRadians(degree))*radius+translate;
+    return { x, y };
+  }
   plotActivationLayer(data, scale, radius){
     const offset = 360/data.length;
     for(var i=0; i<data.length; i++){
@@ -37,8 +41,7 @@ export default class Engine{
       bmd.ctx.putImageData(channelData,0,0);
       const degree = i*offset;
       const translate = 300-(scale*width/2)
-      var x = Math.cos(this.toRadians(degree))*radius+translate;
-      var y = Math.sin(this.toRadians(degree))*radius+translate;
+      const {x,y} = this.calculateCoordinates(degree,radius,translate);
       var sprite = this.game.add.sprite(x, y, bmd);
       sprite.scale.setTo(scale,scale);
       this.sprites.push({ sprite,degree,radius,translate });
