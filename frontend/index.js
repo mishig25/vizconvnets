@@ -1,6 +1,8 @@
-import Model from './model'
-import Engine from './engine'
-import {IMAGE_URLS} from './sampleImages'
+import Model from './model';
+import Engine from './engine';
+import Chart from './chart';
+import { IMAGE_URLS } from './utils/sampleImages';
+import { getTopKClasses } from './utils/imagenet_classes';
 
 var canvas = document.getElementById("helperCanvas");
 var ctx = canvas.getContext("2d");
@@ -17,13 +19,22 @@ IMAGE_URLS.forEach((sample) => {
 const imgElement = document.getElementById('img');
 imgElement.setAttribute('crossorigin', 'anonymous');
 
-let model, engine;
+let model, engine, chart, chartElement;
 
 async function init() {
   engine = new Engine();
+  initChart();
   model = new Model();
   await model.loadModel();
   model.warmUp();
+}
+
+function initChart(){
+  google.charts.load('current', {packages: ['corechart', 'bar']});
+  google.charts.setOnLoadCallback(() => {
+    chartElement = new google.visualization.BarChart(document.getElementById('chart_div'));
+    chart = new Chart(chartElement);
+  });
 }
 
 function fileUploaded(evt) {
@@ -43,11 +54,13 @@ async function predict(imgPath,imgElement){
     if(!model.loaded) await model.loadModel();
 
     const preds = await model.predict(imgElement);
-
     const layer1 = await model.getActivation(canvas,0,8);
     const layer2 = await model.getActivation(canvas,1,16);
     const layer3 = await model.getActivation(canvas,2,32);
     engine.renderChannels([layer1,layer2,layer3]);
+
+    const labels = await getTopKClasses(preds[3],5);
+    chart.draw(labels);
   };
 }
 

@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
-import Plot from './plot';
-import { getTopKClasses } from './imagenet_classes';
+import Plot from './utils/plot';
+import { IMAGENET_CLASSES } from './utils/imagenet_classes';
 
 const IMAGE_SIZE = 224;
 const TOPK_PREDICTIONS = 10;
@@ -59,6 +59,38 @@ export default class Model{
       }
       return activations;
     }
+  }
+
+  async getLabels(){
+    const labels = await this.getTopKClasses(this.preds[this.preds.length-1],5);
+    return lables;
+  }
+
+  async getTopKClasses(layer, topK) {
+    const values = await layer.data();
+
+    const valuesAndIndices = [];
+    for (let i = 0; i < values.length; i++) {
+      valuesAndIndices.push({value: values[i], index: i});
+    }
+    valuesAndIndices.sort((a, b) => {
+      return b.value - a.value;
+    });
+    const topkValues = new Float32Array(topK);
+    const topkIndices = new Int32Array(topK);
+    for (let i = 0; i < topK; i++) {
+      topkValues[i] = valuesAndIndices[i].value;
+      topkIndices[i] = valuesAndIndices[i].index;
+    }
+
+    const topClassesAndProbs = [];
+    for (let i = 0; i < topkIndices.length; i++) {
+      topClassesAndProbs.push({
+        className: IMAGENET_CLASSES[topkIndices[i]],
+        probability: topkValues[i]
+      })
+    }
+    return topClassesAndProbs;
   }
 
 }
