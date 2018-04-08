@@ -2,7 +2,7 @@
 ### Visualizing Channels of 2D Convolutional Layers through [Tensorflow.js](https://js.tensorflow.org)
 Independent Project
 
-#### Live Demo: [https://mishig25.github.io/vizconvnets/](https://mishig25.github.io/vizconvnets/)
+#### Check out the Live Demo: [https://mishig25.github.io/vizconvnets/](https://mishig25.github.io/vizconvnets/)
 
 #### Description:
 ![alt text](https://github.com/mishig25/vizconvnets/raw/master/model/ss.png)

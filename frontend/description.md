@@ -12,6 +12,6 @@ Circles and what layers being visualized:
 
 * outermost circle: `conv_dw_8_relu` of MobileNet
 
-All these layers output feature maps that has formula: `relu(Depthwise Sep. Conv2d)`. From the demo, you can see the effectiveness of Depthwise Separable Convolutions: activations of different filters of a same Depthwise Sep. Conv2d layer differ greatly from one another, which allows the entire network learn more features, compared to normal Conv2d layers.
+All these layers output feature maps that has formula: `relu(Depthwise Sep. Conv2d)`. From the demo, you can see the effectiveness of Depthwise Separable Convolutions: activations of different filters of a same Depthwise Sep. Conv2d layer differ greatly from one another because the inputs are fundamentally different (different channels), which allows the entire network learn more features, compared to normal Conv2d layers.
 
 Source code is available at: [https://github.com/mishig25/vizconvnets](https://github.com/mishig25/vizconvnets)

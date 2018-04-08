@@ -43,12 +43,16 @@ function sampleImageChosen(e) {
 }
 
 const init = async () => {
+  document.getElementById("nn").style.display = "none";
   engine = new Engine();
   initChart();
   model = new Model();
   await model.loadModel();
   model.warmUp();
   randomDemo();
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("loadTitle").style.display = "none";
+  document.getElementById("nn").style.display = "flex";
 }
 
 const initChart = () => {
@@ -79,7 +83,7 @@ const randomDemo = () => {
   if(random){
     const imgPath = getRandomImage();
     predict(imgPath,imgElement);
-    setTimeout(() => { randomDemo() }, 2000);
+    setTimeout(() => { randomDemo() }, 3000);
   }
 }
 
