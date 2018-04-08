@@ -20,3 +20,8 @@ export const IMAGE_URLS = [
   { text: 'coffee', value: 'https://farm4.staticflickr.com/3752/9684880330_9b4698f7cb_z_d.jpg' },
   { text: 'wine', value: 'https://farm4.staticflickr.com/3827/11349066413_99c32dee4a_z_d.jpg' }
 ]
+
+export function getRandomImage(){
+  const item = IMAGE_URLS[Math.floor(Math.random() * IMAGE_URLS.length)];
+  return item.value;
+}

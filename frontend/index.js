@@ -1,7 +1,7 @@
 import Model from './model';
 import Engine from './engine';
 import Chart from './chart';
-import { IMAGE_URLS } from './utils/sampleImages';
+import { IMAGE_URLS, getRandomImage } from './utils/sampleImages';
 import { getTopKClasses } from './utils/imagenet_classes';
 
 var canvas = document.getElementById("helperCanvas");
@@ -20,15 +20,18 @@ const imgElement = document.getElementById('img');
 imgElement.setAttribute('crossorigin', 'anonymous');
 
 let model, engine, chart, chartElement;
+var random = true;
 
 function fileUploaded(evt) {
+  random = false;
   var reader = new FileReader();
   reader.onload = e => predict(e.target.result,imgElement);
   reader.readAsDataURL(evt.target.files[0]);
 }
 
 function sampleImageChosen(e) {
-    predict(e.target.value,imgElement);
+  random = false;
+  predict(e.target.value,imgElement);
 }
 
 const init = async () => {
@@ -37,6 +40,7 @@ const init = async () => {
   model = new Model();
   await model.loadModel();
   model.warmUp();
+  randomDemo();
 }
 
 const initChart = () => {
@@ -61,6 +65,14 @@ const predict = async (imgPath,imgElement) => {
     const labels = await getTopKClasses(preds[3],5);
     chart.draw(labels);
   };
+}
+
+const randomDemo = () => {
+  if(random){
+    const imgPath = getRandomImage();
+    predict(imgPath,imgElement);
+    setTimeout(() => { randomDemo() }, 1500);
+  }
 }
 
 init();

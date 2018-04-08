@@ -6,8 +6,8 @@ export default class Chart{
       this.chart = chartElement;
       this.options = {
         title: 'Predictions',
-        width: 400,
-        height: 300,
+        width: 450,
+        height: 450,
         legend: { position: "none" },
         hAxis: {
           minValue: 0,
