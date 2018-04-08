@@ -14,15 +14,24 @@ export default class Chart{
           maxValue: 1
         },
       };
+      this.optionsAnim = JSON.parse(JSON.stringify(this.options));
+      this.optionsAnim.animation = { duration: 300,easing: 'out' };
   }
-  draw(labels){
+  drawAnimation(labels){
+    const clonedLabels = JSON.parse(JSON.stringify(labels));
+    this.draw(labels,false,this.options);
+    this.draw(clonedLabels,true,this.optionsAnim);
+  }
+  draw(labels,anim,options){
+    if(!anim){
+      for(var i=0; i<labels.length; i++) labels[i].probability = 0;
+    };
     var data = [['Label', 'Probability',]];
     labels.forEach((label) => {
       const { className, probability } = label;
       data.push([className,probability]);
     });
-
     data = google.visualization.arrayToDataTable(data);
-    this.chart.draw(data, this.options);
+    this.chart.draw(data, options);
   }
 }

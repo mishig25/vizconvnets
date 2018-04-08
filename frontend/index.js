@@ -63,7 +63,7 @@ const predict = async (imgPath,imgElement) => {
     engine.renderChannels([layer1,layer2,layer3]);
 
     const labels = await getTopKClasses(preds[3],5);
-    chart.draw(labels);
+    chart.drawAnimation(labels);
   };
 }
 
@@ -71,7 +71,7 @@ const randomDemo = () => {
   if(random){
     const imgPath = getRandomImage();
     predict(imgPath,imgElement);
-    setTimeout(() => { randomDemo() }, 1500);
+    setTimeout(() => { randomDemo() }, 2000);
   }
 }
 

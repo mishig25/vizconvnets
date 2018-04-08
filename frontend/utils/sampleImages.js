@@ -21,7 +21,9 @@ export const IMAGE_URLS = [
   { text: 'wine', value: 'https://farm4.staticflickr.com/3827/11349066413_99c32dee4a_z_d.jpg' }
 ]
 
+var counter = 0;
 export function getRandomImage(){
-  const item = IMAGE_URLS[Math.floor(Math.random() * IMAGE_URLS.length)];
+  const item = IMAGE_URLS[counter % IMAGE_URLS.length];
+  counter = counter + 1;
   return item.value;
 }
