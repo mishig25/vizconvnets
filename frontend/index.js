@@ -21,26 +21,9 @@ imgElement.setAttribute('crossorigin', 'anonymous');
 
 let model, engine, chart, chartElement;
 
-async function init() {
-  engine = new Engine();
-  initChart();
-  model = new Model();
-  await model.loadModel();
-  model.warmUp();
-}
-
-function initChart(){
-  google.charts.load('current', {packages: ['corechart', 'bar']});
-  google.charts.setOnLoadCallback(() => {
-    chartElement = new google.visualization.BarChart(document.getElementById('chart_div'));
-    chart = new Chart(chartElement);
-  });
-}
-
 function fileUploaded(evt) {
   var reader = new FileReader();
   reader.onload = e => predict(e.target.result,imgElement);
-  // Read in the image file as a data URL.
   reader.readAsDataURL(evt.target.files[0]);
 }
 
@@ -48,7 +31,23 @@ function sampleImageChosen(e) {
     predict(e.target.value,imgElement);
 }
 
-async function predict(imgPath,imgElement){
+const init = async () => {
+  engine = new Engine();
+  initChart();
+  model = new Model();
+  await model.loadModel();
+  model.warmUp();
+}
+
+const initChart = () => {
+  google.charts.load('current', {packages: ['corechart', 'bar']});
+  google.charts.setOnLoadCallback(() => {
+    chartElement = new google.visualization.BarChart(document.getElementById('chart_div'));
+    chart = new Chart(chartElement);
+  });
+}
+
+const predict = async (imgPath,imgElement) => {
   imgElement.src= imgPath;
   imgElement.onload = async () => {
     if(!model.loaded) await model.loadModel();

@@ -4,6 +4,16 @@ import { IMAGENET_CLASSES } from './utils/imagenet_classes';
 export default class Chart{
   constructor(chartElement){
       this.chart = chartElement;
+      this.options = {
+        title: 'Predictions',
+        width: 400,
+        height: 300,
+        legend: { position: "none" },
+        hAxis: {
+          minValue: 0,
+          maxValue: 1
+        },
+      };
   }
   draw(labels){
     var data = [['Label', 'Probability',]];
@@ -13,13 +23,6 @@ export default class Chart{
     });
 
     data = google.visualization.arrayToDataTable(data);
-
-    var options = {
-      title: 'Predictions',
-      width: 400,
-      height: 300,
-      legend: { position: "none" },
-    };
-    this.chart.draw(data, options);
+    this.chart.draw(data, this.options);
   }
 }
