@@ -1039,7 +1039,7 @@ export const IMAGENET_CLASSES = {
   999: 'toilet tissue, toilet paper, bathroom tissue'
 };
 
-export async function getTopKClasses(layer, topK) {
+export async function getTopLabels(layer, topK) {
   const values = await layer.data();
 
   const valuesAndIndices = [];

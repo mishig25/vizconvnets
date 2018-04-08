@@ -1,0 +1,35 @@
+#renderArea {
+  width: 600px;
+  height: 600px;
+  position: relative;
+}
+#img {
+  width: 224px;
+  height: 224px;
+  position: absolute;
+  top: 190px;
+  left: 190px;
+  z-index: 10;
+  transform: scale(0.3, 0.3);
+  -ms-transform: scale(0.3, 0.3);
+  -webkit-transform: scale(0.3, 0.3);
+}
+.hidden {
+  display: none;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#imgChooserContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+}
+#orLabel{
+  margin-left: 20px;
+  margin-right: 20px
+}

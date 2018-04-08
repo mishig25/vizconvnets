@@ -1,13 +1,21 @@
+import {markdown} from 'markdown';
+const fs = require("fs");
 import Model from './model';
 import Engine from './engine';
 import Chart from './chart';
 import { IMAGE_URLS, getRandomImage } from './utils/sampleImages';
-import { getTopKClasses } from './utils/imagenet_classes';
+import { getTopLabels } from './utils/imagenet_classes';
 
 var canvas = document.getElementById("helperCanvas");
 var ctx = canvas.getContext("2d");
 document.getElementById('file').addEventListener('change', fileUploaded, false);
 document.getElementById('sampleImages').addEventListener('change', sampleImageChosen, false);
+
+const description = document.getElementById('description');
+var descriptionMarkdown = fs.readFileSync("./description.md", "utf-8");
+var desc = document.createElement('div');
+desc.innerHTML = markdown.toHTML(descriptionMarkdown);
+description.appendChild(desc);
 
 IMAGE_URLS.forEach((sample) => {
   var option = document.createElement('option')
@@ -62,7 +70,7 @@ const predict = async (imgPath,imgElement) => {
     const layer3 = await model.getActivation(canvas,2,32);
     engine.renderChannels([layer1,layer2,layer3]);
 
-    const labels = await getTopKClasses(preds[3],5);
+    const labels = await getTopLabels(preds[3],5);
     chart.drawAnimation(labels);
   };
 }
