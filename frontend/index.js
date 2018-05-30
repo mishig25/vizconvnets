@@ -43,7 +43,6 @@ function sampleImageChosen(e) {
 }
 
 const init = async () => {
-  document.getElementById("nn").style.display = "none";
   engine = new Engine();
   initChart();
   model = new Model();
@@ -87,4 +86,5 @@ const randomDemo = () => {
   }
 }
 
+document.getElementById("nn").style.display = "none";
 init();
