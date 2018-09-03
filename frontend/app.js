@@ -25,7 +25,7 @@ class App extends React.Component {
         await this.model.loadModel();
         this.model.warmUp();
         this.setState({ loading: false });
-        this.engine = new Engine();
+        this.engine = new Engine(this.refs.renderArea);
         await this.initChart();
         this.refs.imgElement.setAttribute('crossorigin', 'anonymous');
         this.initImageUploads();
@@ -108,7 +108,7 @@ class App extends React.Component {
                 </div>
 
                 <h5>*ConvNet is running live in your browser</h5>
-                <div id="renderArea">
+                <div id="renderArea" ref="renderArea">
                     <img id="img" ref="imgElement" width={224} height={224} />
                 </div>
                 <div ref="chart"/>
