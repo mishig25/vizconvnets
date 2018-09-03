@@ -11,6 +11,7 @@
   "dependencies": {
     "@tensorflow/tfjs": "0.6.1",
     "markdown": "^0.5.0",
+    "phaser": "^3.11.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "vega-embed": "~3.0.0"

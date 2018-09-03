@@ -1,8 +1,10 @@
+import Phaser from 'phaser';
+
 export default class Engine{
-  constructor(){
+  constructor(parentElement){
     this.sprites = [];
     this.direction = 'left';
-    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, 'renderArea', { create: this.create, update: this.update.bind(this) });
+    this.game = new Phaser.Game(600, 600, Phaser.CANVAS, parentElement, { create: this.create, update: this.update.bind(this) });
   }
   create(){
     // this.game.stage.backgroundColor = 0xbada55;
