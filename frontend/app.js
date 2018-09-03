@@ -13,11 +13,12 @@ class App extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-
+            random: true,
         }
     }
     async componentDidMount(){
         this.refs.imgElement.setAttribute('crossorigin', 'anonymous');
+        this.initSampleImages();
         this.engine = new Engine();
         this.model = new Model();
         await this.model.loadModel();
@@ -27,8 +28,25 @@ class App extends React.Component {
         this.refs.description.innerHTML = markdown.toHTML(descContent);
     }
     randomDemo(){
-        const imgPath = getRandomImage();
-        this.predict(imgPath);
+        if(this.state.random){
+            const imgPath = getRandomImage();
+            this.predict(imgPath);
+            const self = this;
+            setTimeout(() => { self.randomDemo() }, 3000);
+        }
+    }
+    initSampleImages(){
+        const element = this.refs.sampleImages;
+        IMAGE_URLS.forEach((sample) => {
+            const option = document.createElement('option')
+            option.setAttribute("value", sample.value);
+            option.innerText = sample.text;
+            element.appendChild(option);
+        });
+        element.addEventListener('change', this.predictImage, false);
+    }
+    predictImage(e){
+        this.state.random = false;
     }
     predict(imgPath){
         this.refs.imgElement.src = imgPath;
@@ -53,7 +71,7 @@ class App extends React.Component {
                         upload image
                     </label>
                     <label id="orLabel"> OR </label>
-                    <select id="sampleImages" className="btn btn-info">
+                    <select ref="sampleImages" className="btn btn-info">
                         <option value="" disabled selected>choose sample image</option>
                     </select>
                 </div>
