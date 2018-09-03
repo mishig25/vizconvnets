@@ -18,7 +18,7 @@ class App extends React.Component {
     }
     async componentDidMount(){
         this.refs.imgElement.setAttribute('crossorigin', 'anonymous');
-        this.initSampleImages();
+        this.initImageUploads();
         this.engine = new Engine();
         this.model = new Model();
         await this.model.loadModel();
@@ -35,7 +35,7 @@ class App extends React.Component {
             setTimeout(() => { self.randomDemo() }, 3000);
         }
     }
-    initSampleImages(){
+    initImageUploads(){
         const element = this.refs.sampleImages;
         IMAGE_URLS.forEach((sample) => {
             const option = document.createElement('option')
@@ -43,10 +43,18 @@ class App extends React.Component {
             option.innerText = sample.text;
             element.appendChild(option);
         });
-        element.addEventListener('change', this.predictImage, false);
+        element.addEventListener('change', this.predictSampleImage.bind(this), false);
+        this.refs.file.addEventListener('change', this.predictUploadedImage.bind(this), false);
     }
-    predictImage(e){
+    predictSampleImage(e){
         this.state.random = false;
+        this.predict(e.target.value);
+    }
+    predictUploadedImage(evt){
+        this.state.random = false;
+        const reader = new FileReader();
+        reader.onload = e => this.predict(e.target.result);
+        reader.readAsDataURL(evt.target.files[0]);
     }
     predict(imgPath){
         this.refs.imgElement.src = imgPath;
@@ -67,7 +75,7 @@ class App extends React.Component {
 
                 <div id="imgChooserContainer">
                     <label className="btn btn-primary">
-                        <input type="file" id="file" name="uploadImg" accept="image/*"/>
+                        <input type="file" id="file" ref="file" name="uploadImg" accept="image/*"/>
                         upload image
                     </label>
                     <label id="orLabel"> OR </label>
