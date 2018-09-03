@@ -2,9 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { markdown } from 'markdown';
 const fs = require("fs");
+import ReactLoading from 'react-loading';
 
 import Model from './model';
 import Engine from './engine';
+import Chart from './chart';
+import { getTopLabels } from './utils/imagenet_classes';
 import styles from './styles.css'
 
 import { IMAGE_URLS, getRandomImage } from './utils/sampleImages';
@@ -14,18 +17,21 @@ class App extends React.Component {
         super(props);
         this.state = {
             random: true,
+            loading : true
         }
     }
     async componentDidMount(){
-        this.refs.imgElement.setAttribute('crossorigin', 'anonymous');
-        this.initImageUploads();
-        this.engine = new Engine();
         this.model = new Model();
         await this.model.loadModel();
         this.model.warmUp();
-        this.randomDemo();
+        this.setState({ loading: false });
+        this.engine = new Engine();
+        await this.initChart();
+        this.refs.imgElement.setAttribute('crossorigin', 'anonymous');
+        this.initImageUploads();
         const descContent = fs.readFileSync("./description.md", "utf-8");
         this.refs.description.innerHTML = markdown.toHTML(descContent);
+        this.randomDemo();
     }
     randomDemo(){
         if(this.state.random){
@@ -45,6 +51,13 @@ class App extends React.Component {
         });
         element.addEventListener('change', this.predictSampleImage.bind(this), false);
         this.refs.file.addEventListener('change', this.predictUploadedImage.bind(this), false);
+    }
+    async initChart(){
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        await google.charts.setOnLoadCallback(() => {
+            const chartElement = new google.visualization.BarChart(this.refs.chart);
+            this.chart = new Chart(chartElement);
+        });
     }
     predictSampleImage(e){
         this.state.random = false;
@@ -66,9 +79,19 @@ class App extends React.Component {
             const layer2 = await this.model.getActivation(canvas, 1, 16);
             const layer3 = await this.model.getActivation(canvas, 2, 32);
             this.engine.renderChannels([layer1, layer2, layer3]);
+            const labels = await getTopLabels(preds[3], 5);
+            this.chart.drawAnimation(labels);
         }
     }
     render() {
+        if (this.state.loading){
+            return (
+                <div id="container">
+                    <h3 id="loadTitle">Tensorflow Model loading ...</h3>
+                    <ReactLoading type="cylon" color="grey" height={'20%'} width={'20%'} />
+                </div>
+            );
+        }
         return (
             <div id="container">
                 <h1>Visualizing Convnet</h1>
@@ -88,6 +111,7 @@ class App extends React.Component {
                 <div id="renderArea">
                     <img id="img" ref="imgElement" width={224} height={224} />
                 </div>
+                <div ref="chart"/>
                 <div ref="description"/>
                 <canvas id="helperCanvas" ref="helperCanvas" width={224} height={224}></canvas>
             </div>
