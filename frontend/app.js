@@ -1,20 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { markdown } from 'markdown';
+const fs = require("fs");
 
 import Model from './model';
 import Engine from './engine';
+import styles from './styles.css'
 
 import { IMAGE_URLS, getRandomImage } from './utils/sampleImages';
 
-class HelloMessage extends React.Component {
+class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+
+        }
+    }
     async componentDidMount(){
-        // console.log(this.refs.renderArea);
-        this.engine = new Engine(this.refs.renderArea);
+        this.refs.imgElement.setAttribute('crossorigin', 'anonymous');
+        this.engine = new Engine();
         this.model = new Model();
         await this.model.loadModel();
         this.model.warmUp();
         this.randomDemo();
-        this.refs.imgElement.setAttribute('crossorigin', 'anonymous');
+        const descContent = fs.readFileSync("./description.md", "utf-8");
+        this.refs.description.innerHTML = markdown.toHTML(descContent);
     }
     randomDemo(){
         const imgPath = getRandomImage();
@@ -34,20 +44,33 @@ class HelloMessage extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div id="container">
                 <h1>Visualizing Convnet</h1>
-                <h5>*ConvNet is running live in your browser</h5>
-                <canvas ref="canvas" width={300} height={300} />
-                <div id="renderArea" ref="renderArea">
-                    <img id="img" ref="imgElement" width={224} height={224} crossorigin='anonymous'/>
+
+                <div id="imgChooserContainer">
+                    <label className="btn btn-primary">
+                        <input type="file" id="file" name="uploadImg" accept="image/*"/>
+                        upload image
+                    </label>
+                    <label id="orLabel"> OR </label>
+                    <select id="sampleImages" className="btn btn-info">
+                        <option value="" disabled selected>choose sample image</option>
+                    </select>
                 </div>
+
+                <h5>*ConvNet is running live in your browser</h5>
+                <div id="renderArea">
+                    <img id="img" ref="imgElement" width={224} height={224} />
+                </div>
+                <div ref="description"/>
                 <canvas id="helperCanvas" ref="helperCanvas" width={224} height={224}></canvas>
             </div>
         );
     }
 }
 
+
 ReactDOM.render(
-    <HelloMessage name="Taylor" />,
+    <App name="Taylor" />,
     document.getElementById('react-container')
 );
