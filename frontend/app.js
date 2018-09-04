@@ -12,7 +12,16 @@ import styles from './styles.css'
 
 import { IMAGE_URLS, getRandomImage } from './utils/sampleImages';
 
+/**
+ * React Component for runnign Tensorflow.js 
+ * and visualizing ConvNets
+ */
 class App extends React.Component {
+
+    /**
+     * the class constructor
+     * @param {args} props for the parent class
+     */
     constructor(props){
         super(props);
         this.state = {
@@ -20,6 +29,12 @@ class App extends React.Component {
             loading : true
         }
     }
+
+    /**
+     * One of React's life cycle methods
+     * Once the current React component is loaded, this function
+     * initializes neural network model, graphics engine, and charts element.
+     */
     async componentDidMount(){
         this.model = new Model();
         await this.model.loadModel();
@@ -33,14 +48,22 @@ class App extends React.Component {
         this.refs.description.innerHTML = markdown.toHTML(descContent);
         this.randomDemo();
     }
+
+    /**
+     * Runs random inference on the neural net model
+     */
     randomDemo(){
         if(this.state.random){
             const imgPath = getRandomImage();
-            this.predict(imgPath);
+            this.runInference(imgPath);
             const self = this;
             setTimeout(() => { self.randomDemo() }, 3000);
         }
     }
+
+    /**
+     * Populate choose images option with options
+     */
     initImageUploads(){
         const element = this.refs.sampleImages;
         IMAGE_URLS.forEach((sample) => {
@@ -52,6 +75,10 @@ class App extends React.Component {
         element.addEventListener('change', this.predictSampleImage.bind(this), false);
         this.refs.file.addEventListener('change', this.predictUploadedImage.bind(this), false);
     }
+
+    /**
+     * Initializes the chart and attached it to DOM
+     */
     async initChart(){
         google.charts.load('current', { packages: ['corechart', 'bar'] });
         await google.charts.setOnLoadCallback(() => {
@@ -59,17 +86,32 @@ class App extends React.Component {
             this.chart = new Chart(chartElement);
         });
     }
+
+    /**
+     * Runs inference on the neural net model by passing the chosen sample image
+     * @param {object} e contains chosen image information
+     */
     predictSampleImage(e){
         this.state.random = false;
-        this.predict(e.target.value);
+        this.runInference(e.target.value);
     }
+
+    /**
+     * Runs inference on the neural net model by passing the uploaded image
+     * @param {object} evt contains uploaded file information
+     */
     predictUploadedImage(evt){
         this.state.random = false;
         const reader = new FileReader();
-        reader.onload = e => this.predict(e.target.result);
+        reader.onload = e => this.runInference(e.target.result);
         reader.readAsDataURL(evt.target.files[0]);
     }
-    predict(imgPath){
+
+    /**
+     * Runs inference on the neural net
+     * @param {string} imgPath indicates information of the image to run the inference on
+     */
+    runInference(imgPath){
         this.refs.imgElement.src = imgPath;
         const canvas = this.refs.helperCanvas;
         this.refs.imgElement.onload = async() => {
@@ -83,6 +125,10 @@ class App extends React.Component {
             this.chart.drawAnimation(labels);
         }
     }
+
+    /**
+     * React Component's render method for rendering HTML components
+     */
     render() {
         if (this.state.loading){
             return (
@@ -121,6 +167,6 @@ class App extends React.Component {
 
 
 ReactDOM.render(
-    <App name="Taylor" />,
+    <App/>,
     document.getElementById('react-container')
 );

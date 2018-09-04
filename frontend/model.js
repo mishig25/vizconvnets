@@ -6,14 +6,24 @@ const IMAGE_SIZE = 224;
 const TOPK_PREDICTIONS = 10;
 const mobilenetPath = 'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json'
 
+/**
+ * Mobilenet class for loading mobelent and image inferences
+ */
 export default class Model{
+
+  /**
+   * the class constructor
+   */
   constructor(){
     this.loaded = false;
   }
+
+  /**
+   * Loads mobilenet
+   */
   async loadModel(){
     const mobilenet = await tf.loadModel(mobilenetPath);
-
-    // Return a model that outputs an internal activation.
+    // Return a model that outputs activations of hidden layers.
     const layerNames = ['conv_dw_1_relu','conv_dw_6_relu',
     'conv_dw_8_relu', 'reshape_2'];
     const layerOutputs = [];
@@ -25,14 +35,21 @@ export default class Model{
     this.loaded = true;
   }
 
+  /**
+   * Warms up mobilenet to increase speed of subsequent processes.
+   */
   warmUp(){
     tf.tidy(() => {
       this.model.predict(tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3]));
     });
   }
 
+  /**
+   * Run inference on given image and returns logits
+   * @param {HTMLImageElement} imgElement 
+   * @returns {object} imagenet labels and their probabilities
+   */
   async predict(imgElement) {
-
     const preds = tf.tidy(() => {
       const img = tf.fromPixels(imgElement).toFloat();
       const offset = tf.scalar(127.5);
@@ -44,6 +61,13 @@ export default class Model{
     return preds;
   }
 
+  /**
+   * Returns activations of a layer
+   * @param {HTMLCanvasElement} canvas that will be used for plotting
+   * @param {integer} layerNumber specifying which hidden layer
+   * @param {integer} channelCount specifying how many feature filters to extract
+   * @returns {array} of activation plots
+   */
   async getActivation(canvas, layerNumber, channelCount){
     if(this.preds){
       var activations = []
@@ -61,11 +85,20 @@ export default class Model{
     }
   }
 
+  /**
+   * @returns {array} of the highest labels
+   */
   async getLabels(){
     const labels = await this.getTopKClasses(this.preds[this.preds.length-1],5);
     return lables;
   }
 
+  /**
+   * Returns the highest proababilities and their labels
+   * @param {tensor} layer last layer of the neural net
+   * @param {integer} topK indicating how many of the top proababilities to extract
+   * @returns {object} of the highest proababilities and their labels
+   */
   async getTopKClasses(layer, topK) {
     const values = await layer.data();
 
