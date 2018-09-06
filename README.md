@@ -22,6 +22,8 @@ Using Tensorflowjs and HTML5 Canvas to create a convnet visualizations in web-br
 
 ### Development:
 ```bash
+git clone https://github.com/mishig25/vizconvnets.git
+cd ./vizconvnets
 cd frontend
 yarn
 yarn watch
